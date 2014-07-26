@@ -25,6 +25,7 @@ int main(void){
 		}
 		printf("\n");
 	}
+	printf("%d %d\n",outegoma_y,outegoma_x);
 /*	for(;;){
 		if(i%2 == 1){
 			attack();
@@ -157,6 +158,7 @@ int kiki(void){
 								outegoma(i-1,j-1,i,j);
 							}
 							bit_ban[i-1][j]=1;
+							outegoma(i-1,j,i,j);
 							if(j+1<=8){
 								bit_ban[i-1][j+1]=1;
 								outegoma(i-1,j+1,i,j);

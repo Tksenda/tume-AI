@@ -93,13 +93,16 @@ int kiki(void){
 				switch(ban[i][j]){
 					case 10:
 						bit_ban[i-1][j]=1;
+						outegoma(i-1,j,i,j);
 						break;
 					case 20:
 						for(k=1;0<=i-k;k++){
 							if(ban[i-k][j]==0){
 								bit_ban[i-k][j]=1;
+								outegoma(i-k,j,i,j);
 							}else{
 								bit_ban[i-k][j]=1;
+								outegoma(i-k,j,i,j);
 								break;
 							}
 						}
@@ -107,31 +110,39 @@ int kiki(void){
 					case 30:
 						if(j<1){
 							bit_ban[i-2][j+1]=1;
+							outegoma(i-2,j+1,i,j);
 							break;
 						}
 						if(7<j){
 							bit_ban[i-2][j-1]=1;
+							outegoma(i-2,j-1,i,j);
 							break;
 						}
 						bit_ban[i-2][j-1]=1;
+						outegoma(i-2,j-1,i,j);
 						bit_ban[i-2][j+1]=1;
+						outegoma(i-2,j+1,i,j);
 						break;
 					case 40:
 						if(0<=i-1){
 							if(0<=j-1){
 								bit_ban[i-1][j-1]=1;
+								outegoma(i-1,j-1,i,j);
 							}
 							bit_ban[i-1][j]=1;
 							if(j+1<=8){
 								bit_ban[i-1][j+1]=1;
+								outegoma(i-1,j+1,i,j);
 							}
 						}
 						if(i+1<=8){
 							if(0<=j-1){
 								bit_ban[i+1][j-1]=1;
+								outegoma(i+1,j-1,i,j);
 							}
 							if(j+1<=8){
 								bit_ban[i+1][j+1]=1;
+								outegoma(i+1,j+1,i,j);
 							}
 						}
 						break;
@@ -143,20 +154,25 @@ int kiki(void){
 						if(0<=i-1){
 							if(0<=j-1){
 								bit_ban[i-1][j-1]=1;
+								outegoma(i-1,j-1,i,j);
 							}
 							bit_ban[i-1][j]=1;
 							if(j+1<=8){
 								bit_ban[i-1][j+1]=1;
+								outegoma(i-1,j+1,i,j);
 							}
 						}
 						if(0<=j-1){
 							bit_ban[i][j-1]=1;
+							outegoma(i,i-1,i,j);
 						}
 						if(j+1<=8){
 							bit_ban[i][j+1]=1;
+							outegoma(i,j+1,i,j);
 						}
 						if(i+1<=8){
 							bit_ban[i+1][j]=1;
+							outegoma(i+1,j,i,j);
 						}
 						break;
 					case 70:
@@ -164,32 +180,40 @@ int kiki(void){
 						for(k=1;0<=j-k && 0<=i-k;k++){
 							if(ban[i-k][j-k]==0){
 								bit_ban[i-k][j-k]=1;
+								outegoma(i-k,j-k,i,j);
 							}else{
 								bit_ban[i-k][j-k]=1;
+								outegoma(i-k,j-k,i,j);
 								break;
 							}
 						}
 						for(k=1;i+k<=8 && 0<=j-k;k++){
 							if(ban[i+k][j-k]==0){
 								bit_ban[i+k][j-k]=1;
+								outegoma(i+k,j-k,i,j);
 							}else{
 								bit_ban[i+k][j-k]=1;
+								outegoma(i+k,j-k,i,j);
 								break;
 							}
 						}
 						for(k=1;i+k<=8 && j+k<=8;k++){
 							if(ban[i+k][j+k]==0){
 								bit_ban[i+k][j+k]=1;
+								outegoma(i+k,j+k,i,j);
 							}else{
 								bit_ban[i+k][j+k]=1;
+								outegoma(i+k,j+k,i,j);
 								break;
 							}
 						}
 						for(k=1;0<=i-k && j+k<=8;k++){
 							if(ban[i-k][j+k]==0){
 								bit_ban[i-k][j+k]=1;
+								outegoma(i-k,j+k,i,j);
 							}else{
 								bit_ban[i-k][j+k]=1;
+								outegoma(i-k,j+k,i,j);
 								break;
 							}
 						}
@@ -203,32 +227,40 @@ int kiki(void){
 						for(k=1;0<=j-k;k++){
 							if(ban[i][j-k]==0){
 								bit_ban[i][j-k]=1;
+								outegoma(i,j-k,i,j);
 							}else{
 								bit_ban[i][j-k]=1;
+								outegoma(i,j-k,i,j);
 								break;
 							}
 						}
 						for(k=1;j+k<=8;k++){
 							if(ban[i][j+k]==0){
 								bit_ban[i][j+k]=1;
+								outegoma(i,j+k,i,j);
 							}else{
 								bit_ban[i][j+k]=1;
+								outegoma(i,j+k,i,j);
 								break;
 							}
 						}
 						for(k=1;0<=i-k;k++){
 							if(ban[i-k][j]==0){
 								bit_ban[i-k][j]=1;
+								outegoma(i-k,j,i,j);
 							}else{
 								bit_ban[i-k][j]=1;
+								outegoma(i-k,j,i,j);
 								break;
 							}
 						}
 						for(k=1;i+k<=8;k++){
 							if(ban[i+k][j]==0){
 								bit_ban[i+k][j]=1;
+								outegoma(i+k,j,i,j);
 							}else{
 								bit_ban[i+k][j]=1;
+								outegoma(i+k,j,i,j);
 								break;
 							}
 						}
@@ -242,25 +274,33 @@ int kiki(void){
 						if(0<=i-1){
 							if(0<=j-1){
 								bit_ban[i-1][j-1]=1;
+								outegoma(i-1,j-1,i,j);
 							}
 							bit_ban[i-1][j]=1;
+							outegoma(i-1,j,i,j);
 							if(j+1<=8){
 								bit_ban[i-1][j+1]=1;
+								outegoma(i-1,j+1,i,j);
 							}
 						}
 						if(0<=j-1){
 							bit_ban[i][j-1]=1;
+							outegoma(i,j-1,i,j);
 						}
 						if(j+1<=8){
 							bit_ban[i][j+1]=1;
+							outegoma(i,j+1,i,j);
 						}
 						if(i+1<=8){
 							if(0<=j-1){
 								bit_ban[i+1][j-1]=1;
+								outegoma(i+1,j-1,i,j);
 							}
 							bit_ban[i+1][j]=1;
+							outegoma(i+1,j,i,j);
 							if(j+1<=8){
 								bit_ban[i+1][j+1]=1;
+								outegoma(i+1,j+1,i,j);
 							}
 						}
 						break;

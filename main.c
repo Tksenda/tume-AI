@@ -2,7 +2,7 @@
 #include<stdlib.h>
 
 int ban[9][9],tume_tesuu,motigoma[64],motigoma_number,bit_ban[9][9];
-int gyoku_x,gyoku_y,outegoma_x,outegoma_y;
+int gyoku_x,gyoku_y,outegoma_x,outegoma_y,bit_ban_enemy[9][9];
 
 int load(void);
 int attack(void);
@@ -11,13 +11,13 @@ int check_tume(void);
 int kiki(void);
 int gyoku_nige(void);
 int outegoma(int y,int x,int y1,int x1);
+int kiki_enemy(void);
 int output(void);
 
 int main(void){
 	int i;
-	i=1;
 	load();
-	kiki();
+	i=check_tume();
 	int j,k;
 	for(j=0;j<9;j++){
 		for(k=0;k<9;k++){
@@ -25,7 +25,11 @@ int main(void){
 		}
 		printf("\n");
 	}
-	printf("%d %d\n",outegoma_y,outegoma_x);
+	if(i==0){
+		printf("ご主人様詰んでいます。\n");
+	}else{
+		printf("ご主人様まだ詰んでおりません。\n");
+	}
 /*	for(;;){
 		if(i%2 == 1){
 			attack();
@@ -74,11 +78,18 @@ int defense(void){
 int check_tume(void){
 	int i;
 	kiki();
+	kiki_enemy();
 	if(bit_ban[gyoku_y][gyoku_x]==0){
 		return -1;
 	}
 	i=gyoku_nige();
 	if(i==-1){
+		return -1;
+	}
+	if(bit_ban[outegoma_y][outegoma_x]==0){
+		return -1;
+	}
+	if(bit_ban_enemy[outegoma_y][outegoma_x]==1){
 		return -1;
 	}
 	return 0;
@@ -364,6 +375,190 @@ int outegoma(int y,int x,int y1,int x1){
 	if(gyoku_x==x && gyoku_y==y){
 		outegoma_x=x1;
 		outegoma_y=y1;
+	}
+	return 0;
+}
+
+int kiki_enemy(void){
+	int i,j,k;
+	for(i=0;i<9;i++){
+		for(j=0;j<9;j++){
+			switch(ban[i][j]-1000){
+				case 10:
+					bit_ban_enemy[i+1][j]=1;
+					break;
+				case 20:
+					for(k=1;i+k<=8;k++){
+						if(ban[i+k][j]==0){
+							bit_ban_enemy[i+k][j]=1;
+						}else{
+							bit_ban_enemy[i+k][j]=1;
+							break;
+						}
+					}
+					break;
+				case 30:
+					if(j+1<=8){
+						bit_ban_enemy[i+2][j+1]=1;
+						break;
+					}
+					if(0<=j-1){
+						bit_ban_enemy[i+2][j-1]=1;
+						break;
+					}
+					bit_ban_enemy[i+2][j-1]=1;
+					bit_ban_enemy[i+2][j+1]=1;
+					break;
+				case 40:
+					if(i+1<=8){
+						if(j+1<=8){
+							bit_ban_enemy[i+1][j+1]=1;
+						}
+						bit_ban_enemy[i+1][j]=1;
+						if(0<=j-1){
+							bit_ban_enemy[i+1][j-1]=1;
+						}
+					}
+					if(0<=i-1){
+						if(0<=j-1){
+							bit_ban_enemy[i-1][j-1]=1;
+						}
+						if(j+1<=8){
+							bit_ban_enemy[i-1][j+1]=1;
+						}
+					}
+					break;
+				case 50:
+				case 110:
+				case 120:
+				case 130:
+				case 140:
+					if(i+1<=8){
+						if(0<=j-1){
+							bit_ban_enemy[i+1][j-1]=1;
+						}
+						bit_ban_enemy[i+1][j]=1;
+						if(j+1<=8){
+							bit_ban_enemy[i+1][j+1]=1;
+						}
+					}
+					if(0<=j-1){
+						bit_ban_enemy[i][j-1]=1;
+					}
+					if(j+1<=8){
+						bit_ban_enemy[i][j+1]=1;
+					}
+					if(0<=i-1){
+						bit_ban_enemy[i-1][j]=1;
+					}
+					break;
+				case 70:
+				case 170:
+					for(k=1;0<=j-k && 0<=i-k;k++){
+						if(ban[i-k][j-k]==0){
+							bit_ban_enemy[i-k][j-k]=1;
+						}else{
+							bit_ban_enemy[i-k][j-k]=1;
+							break;
+						}
+					}
+					for(k=1;i+k<=8 && 0<=j-k;k++){
+						if(ban[i+k][j-k]==0){
+							bit_ban_enemy[i+k][j-k]=1;
+						}else{
+							bit_ban_enemy[i+k][j-k]=1;
+							break;
+						}
+					}
+					for(k=1;i+k<=8 && j+k<=8;k++){
+						if(ban[i+k][j+k]==0){
+							bit_ban_enemy[i+k][j+k]=1;
+						}else{
+							bit_ban_enemy[i+k][j+k]=1;
+							break;
+						}
+					}
+					for(k=1;0<=i-k && j+k<=8;k++){
+						if(ban[i-k][j+k]==0){
+							bit_ban_enemy[i-k][j+k]=1;
+						}else{
+							bit_ban_enemy[i-k][j+k]=1;
+							break;
+						}
+					}
+					if(ban[i][j]==70){
+						break;
+					}else if(ban[i][j]==170){
+						goto gyoku;
+					}
+				case 80:
+				case 180:
+					for(k=1;0<=j-k;k++){
+						if(ban[i][j-k]==0){
+							bit_ban_enemy[i][j-k]=1;
+						}else{
+							bit_ban_enemy[i][j-k]=1;
+							break;
+						}
+					}
+					for(k=1;j+k<=8;k++){
+						if(ban[i][j+k]==0){
+							bit_ban_enemy[i][j+k]=1;
+						}else{
+							bit_ban_enemy[i][j+k]=1;
+							break;
+						}
+					}
+					for(k=1;0<=i-k;k++){
+						if(ban[i-k][j]==0){
+							bit_ban_enemy[i-k][j]=1;
+						}else{
+							bit_ban_enemy[i-k][j]=1;
+							break;
+						}
+					}
+					for(k=1;i+k<=8;k++){
+						if(ban[i+k][j]==0){
+							bit_ban_enemy[i+k][j]=1;
+						}else{
+							bit_ban_enemy[i+k][j]=1;
+							break;
+						}
+					}
+					if(ban[i][j]==80){
+						break;
+					}else if(ban[i][j]==180){
+						goto gyoku;
+					}
+				case 60:
+					gyoku:
+					if(0<=i-1){
+						if(0<=j-1){
+							bit_ban_enemy[i-1][j-1]=1;
+						}
+						bit_ban_enemy[i-1][j]=1;
+						if(j+1<=8){
+							bit_ban_enemy[i-1][j+1]=1;
+						}
+					}
+					if(0<=j-1){
+						bit_ban_enemy[i][j-1]=1;
+					}
+					if(j+1<=8){
+						bit_ban_enemy[i][j+1]=1;
+					}
+					if(i+1<=8){
+						if(0<=j-1){
+							bit_ban_enemy[i+1][j-1]=1;
+						}
+						bit_ban_enemy[i+1][j]=1;
+						if(j+1<=8){
+							bit_ban_enemy[i+1][j+1]=1;
+						}
+					}
+					break;
+			}
+		}
 	}
 	return 0;
 }

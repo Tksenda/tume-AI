@@ -121,6 +121,8 @@ int kiki(void){
 							if(ban[i-k][j]==0){
 								bit_ban[i-k][j]=1;
 								outegoma(i-k,j,i,j);
+							}else if(ban[i-k][j]==1060){
+								bit_ban[i-k][j]==1;
 							}else{
 								bit_ban[i-k][j]=1;
 								outegoma(i-k,j,i,j);
@@ -203,6 +205,8 @@ int kiki(void){
 							if(ban[i-k][j-k]==0){
 								bit_ban[i-k][j-k]=1;
 								outegoma(i-k,j-k,i,j);
+							}else if(ban[i-k][j-k]==1060){
+								bit_ban[i-k][j-k]=1;
 							}else{
 								bit_ban[i-k][j-k]=1;
 								outegoma(i-k,j-k,i,j);
@@ -213,6 +217,8 @@ int kiki(void){
 							if(ban[i+k][j-k]==0){
 								bit_ban[i+k][j-k]=1;
 								outegoma(i+k,j-k,i,j);
+							}else if(ban[i+k][j-k]==1060){
+								bit_ban[i+k][j-k]=1;
 							}else{
 								bit_ban[i+k][j-k]=1;
 								outegoma(i+k,j-k,i,j);
@@ -223,6 +229,8 @@ int kiki(void){
 							if(ban[i+k][j+k]==0){
 								bit_ban[i+k][j+k]=1;
 								outegoma(i+k,j+k,i,j);
+							}else if(ban[i+k][j+k]==1060){
+								bit_ban[i+k][j+k]=1;
 							}else{
 								bit_ban[i+k][j+k]=1;
 								outegoma(i+k,j+k,i,j);
@@ -233,6 +241,8 @@ int kiki(void){
 							if(ban[i-k][j+k]==0){
 								bit_ban[i-k][j+k]=1;
 								outegoma(i-k,j+k,i,j);
+							}else if(ban[i-k][j+k]==1060){
+								bit_ban[i-k][j+k]=1;
 							}else{
 								bit_ban[i-k][j+k]=1;
 								outegoma(i-k,j+k,i,j);
@@ -250,6 +260,8 @@ int kiki(void){
 							if(ban[i][j-k]==0){
 								bit_ban[i][j-k]=1;
 								outegoma(i,j-k,i,j);
+							}else if(ban[i][j-k]==1060){
+								bit_ban[i][j-k]=1;
 							}else{
 								bit_ban[i][j-k]=1;
 								outegoma(i,j-k,i,j);
@@ -260,6 +272,8 @@ int kiki(void){
 							if(ban[i][j+k]==0){
 								bit_ban[i][j+k]=1;
 								outegoma(i,j+k,i,j);
+							}else if(ban[i][j+k]==1060){
+								bit_ban[i][j+k]=1;
 							}else{
 								bit_ban[i][j+k]=1;
 								outegoma(i,j+k,i,j);
@@ -270,6 +284,8 @@ int kiki(void){
 							if(ban[i-k][j]==0){
 								bit_ban[i-k][j]=1;
 								outegoma(i-k,j,i,j);
+							}else if(ban[i-k][j]==1060){
+								bit_ban[i-k][j]=1;
 							}else{
 								bit_ban[i-k][j]=1;
 								outegoma(i-k,j,i,j);
@@ -280,6 +296,8 @@ int kiki(void){
 							if(ban[i+k][j]==0){
 								bit_ban[i+k][j]=1;
 								outegoma(i+k,j,i,j);
+							}else if(ban[i+k][j]==1060){
+								bit_ban[i+k][j]=1;
 							}else{
 								bit_ban[i+k][j]=1;
 								outegoma(i+k,j,i,j);
@@ -408,12 +426,12 @@ int kiki_enemy(void){
 					}
 					break;
 				case 30:
-					if(j+1<=8){
-						bit_ban_enemy[i+2][j+1]=1;
+					if(8<j+1){
+						bit_ban_enemy[i+2][j-1]=1;
 						break;
 					}
-					if(0<=j-1){
-						bit_ban_enemy[i+2][j-1]=1;
+					if(j-1<0){
+						bit_ban_enemy[i+2][j+1]=1;
 						break;
 					}
 					bit_ban_enemy[i+2][j-1]=1;
@@ -541,6 +559,7 @@ int kiki_enemy(void){
 						goto gyoku;
 					}
 				case 60:
+					break;
 					gyoku:
 					if(0<=i-1){
 						if(0<=j-1){

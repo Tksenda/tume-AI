@@ -76,7 +76,7 @@ int defense(void){
 }
 
 int check_tume(void){
-	int i;
+	int i,x,y;
 	kiki();
 	kiki_enemy();
 	if(bit_ban[gyoku_y][gyoku_x]==0){
@@ -86,8 +86,12 @@ int check_tume(void){
 	if(i==-1){
 		return -1;
 	}
-	if(bit_ban[outegoma_y][outegoma_x]==0){
-		return -1;
+	y=abs(outegoma_y-gyoku_y);
+	x=abs(outegoma_x-gyoku_y);
+	if(x<=1 && y<=1){
+		if(bit_ban[outegoma_y][outegoma_x]==0){
+			return -1;
+		}
 	}
 	if(bit_ban_enemy[outegoma_y][outegoma_x]==1){
 		return -1;
@@ -283,6 +287,7 @@ int kiki(void){
 							goto gyoku;
 						}
 					case 60:
+						break;
 						gyoku:
 						if(0<=i-1){
 							if(0<=j-1){

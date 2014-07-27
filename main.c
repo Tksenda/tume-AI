@@ -96,6 +96,11 @@ int check_tume(void){
 	if(bit_ban_enemy[outegoma_y][outegoma_x]==1){
 		return -1;
 	}
+	if(2<=x || 2<=y){
+		if(motigoma_number!=0){
+			return -1;
+		}
+	}
 	return 0;
 }
 

@@ -2,34 +2,46 @@
 #include<stdlib.h>
 
 int ban[9][9],tume_tesuu,motigoma[64],motigoma_number,bit_ban[9][9];
-int gyoku_x,gyoku_y,outegoma_x,outegoma_y,bit_ban_enemy[9][9];
+int gyoku_x,gyoku_y,outegoma_x,outegoma_y,bit_ban_enemy[9][9],tesuu;
+int attack_level[256],defense_level[256],attack_level1_i[256][16];
+int ban_think[9][9],kihu[512],motigoma_think[64];
 
 int load(void);
 int attack(void);
+int attack_level1(void);
 int defense(void);
 int check_tume(void);
 int kiki(void);
 int gyoku_nige(void);
 int outegoma(int y,int x,int y1,int x1);
 int kiki_enemy(void);
+int motigoma_seiri(int koma);
+int back_ban(int back_tesuu);
 int output(void);
 
 int main(void){
-	int i;
+	int i,j,k;
 	load();
-	i=check_tume();
-	int j,k;
+	for(;;){
+		attack();
+		tesuu++;
+		i=check_tume();
+		if(i==0){
+			break;
+		}else{
+			back_ban(1);
+		}
+	}
+	printf("詰ませました。\n");
+	printf("最終図\n");
 	for(j=0;j<9;j++){
-		for(k=0;k<9;k++){
-			printf(" %d",bit_ban[j][k]);
+			for(k=0;k<9;k++){
+			printf(" %d",ban_think[j][k]);
 		}
 		printf("\n");
 	}
-	if(i==0){
-		printf("ご主人様詰んでいます。\n");
-	}else{
-		printf("ご主人様まだ詰んでおりません。\n");
-	}
+	printf("棋譜(独自規格)\n");
+	printf("%d\n",kihu[0]);
 /*	for(;;){
 		if(i%2 == 1){
 			attack();
@@ -48,6 +60,7 @@ int load(void){
 	for(i=0;i<9;i++){
 		for(j=0;j<9;j++){
 			scanf("%d",&ban[i][j]);
+			ban_think[i][j]=ban[i][j];
 			if(ban[i][j]==1060){
 				gyoku_x=j;
 				gyoku_y=i;
@@ -58,6 +71,7 @@ int load(void){
 	i=0;
 	for(;;){
 		scanf("%d",&motigoma[i]);
+		motigoma_think[i]=motigoma[i];
 		if(motigoma[i] == 0){
 			motigoma_number=i;
 			break;
@@ -68,6 +82,210 @@ int load(void){
 }
 
 int attack(void){
+	switch(attack_level[tesuu/2+tesuu%2]){
+		case 0:
+			attack_level1();
+			break;
+	}
+	return 0;
+}
+
+int attack_level1(void){
+	switch(motigoma_think[attack_level1_i[tesuu/2+tesuu%2][0]]){
+		case 0:
+			attack_level[tesuu]++;
+			break;
+		case 10:
+			switch(attack_level1_i[tesuu/2+tesuu%2][1]){
+				case 0:
+					if(ban_think[gyoku_y+1][gyoku_x]==0){
+						ban_think[gyoku_y+1][gyoku_x]=10;
+						motigoma_seiri(10);
+						kihu[tesuu]=(99*100+gyoku_x*10+(gyoku_y+1))*1000+10;
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 1:
+					attack_level1_i[tesuu/2+tesuu%2][1]=0;
+					attack_level1_i[tesuu/2+tesuu%2][0]++;
+					break;
+			}
+			break;
+		case 20:
+			switch(attack_level1_i[tesuu/2+tesuu%2][1]){
+				case 0:
+					if(ban_think[gyoku_y+1][gyoku_x]==0){
+						ban_think[gyoku_y+1][gyoku_x]=20;
+						motigoma_seiri(20);
+						kihu[tesuu]=(99*100+gyoku_x*10+(gyoku_y+1))*1000+20;
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 1:
+					attack_level1_i[tesuu/2+tesuu%2][1]=0;
+					attack_level1_i[tesuu/2+tesuu%2][0]++;
+					break;
+			}
+			break;
+		case 30:
+			switch(attack_level1_i[tesuu/2+tesuu%2][1]){
+				case 0:
+					if(0<=gyoku_x-1 && gyoku_y+2<=8){
+						if(ban_think[gyoku_y+2][gyoku_x-1]==0){
+							ban_think[gyoku_y+2][gyoku_x-1]=30;
+							motigoma_seiri(30);
+							kihu[tesuu]=(99*100+(gyoku_x-1)*10+(gyoku_y+2))*1000+30;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 1:
+					if(gyoku_x+1<=8 && gyoku_y+2<=8){
+						if(ban_think[gyoku_y+2][gyoku_x+1]==0){
+							ban_think[gyoku_y+2][gyoku_x+1]=30;
+							motigoma_seiri(30);
+							kihu[tesuu]=(99*100+(gyoku_x+1)*10+(gyoku_y+2))*1000+30;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 2:
+					attack_level1_i[tesuu/2+tesuu%2][1]=0;
+					attack_level1_i[tesuu/2+tesuu%2][0]++;
+					break;
+			}
+			break;
+		case 40:
+			switch(attack_level1_i[tesuu/2+tesuu%2][1]){
+				case 0:
+					if(0<=gyoku_x-1 && gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x-1]==0){
+							ban_think[gyoku_y+1][gyoku_x-1]=40;
+							motigoma_seiri(40);
+							kihu[tesuu]=(99*100+(gyoku_x-1)*10+(gyoku_y+1))*1000+40;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 1:
+					if(gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x]==0){
+							ban_think[gyoku_y+1][gyoku_x]=40;
+							motigoma_seiri(40);
+							kihu[tesuu]=(99*100+gyoku_x*10+(gyoku_y+1))*1000+40;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 2:
+					if(gyoku_x+1<=8 && gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x+1]==0){
+							ban_think[gyoku_y+1][gyoku_x+1]=40;
+							motigoma_seiri(40);
+							kihu[tesuu]=(99*100+(gyoku_x+1)*10+(gyoku_y+1))*1000+40;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 3:
+					if(gyoku_x+1<=8 && 0<=gyoku_y-1){
+						if(ban_think[gyoku_y-1][gyoku_x+1]==0){
+							ban_think[gyoku_y-1][gyoku_x+1]=40;
+							motigoma_seiri(40);
+							kihu[tesuu]=(99*100+(gyoku_x+1)*10+(gyoku_y-1))*1000+40;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 4:
+					if(0<=gyoku_x-1 && 0<=gyoku_y-1){
+						if(ban_think[gyoku_y-1][gyoku_x-1]==0){
+							ban_think[gyoku_y-1][gyoku_x-1]=40;
+							motigoma_seiri(40);
+							kihu[tesuu]=(99*100+(gyoku_x-1)*10+(gyoku_y-1))*1000+40;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 5:
+					attack_level1_i[tesuu/2+tesuu%2][1]=0;
+					attack_level1_i[tesuu/2+tesuu%2][0]++;
+					break;
+			}
+			break;
+		case 50:
+			switch(attack_level1_i[tesuu/2+tesuu%2][1]){
+				case 0:
+					if(0<=gyoku_x-1 && gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x-1]==0){
+							ban_think[gyoku_y+1][gyoku_x-1]=50;
+							motigoma_seiri(50);
+							kihu[tesuu]=(99*100+(gyoku_x-1)*10+(gyoku_y+1))*1000+50;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 1:
+					if(gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x]==0){
+							ban_think[gyoku_y+1][gyoku_x]=50;
+							motigoma_seiri(50);
+							kihu[tesuu]=(99*100+gyoku_x*10+(gyoku_y+1))*1000+50;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 2:
+					if(gyoku_x+1<=8 && gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x+1]==0){
+							ban_think[gyoku_y+1][gyoku_x+1]=50;
+							motigoma_seiri(50);
+							kihu[tesuu]=(99*100+(gyoku_x+1)*10+(gyoku_y+1))*1000+50;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 3:
+					if(gyoku_x+1<=8){
+						if(ban_think[gyoku_y][gyoku_x+1]==0){
+							ban_think[gyoku_y][gyoku_x+1]=50;
+							motigoma_seiri(50);
+							kihu[tesuu]=(99*100+(gyoku_x+1)*10+gyoku_y)*1000+50;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 4:
+					if(0<=gyoku_y-1){
+						if(ban_think[gyoku_y-1][gyoku_x]==0){
+							ban_think[gyoku_y-1][gyoku_x]=50;
+							motigoma_seiri(50);
+							kihu[tesuu]=(99*100+gyoku_x*10+(gyoku_y-1))*1000+50;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 5:
+					if(0<=gyoku_x-1){
+						if(ban_think[gyoku_y][gyoku_x-1]==0){
+							ban_think[gyoku_y][gyoku_x-1]=50;
+							motigoma_seiri(50);
+							kihu[tesuu]=(99*100+(gyoku_x-1)*10+gyoku_y)*1000+50;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 6:
+					attack_level1_i[tesuu/2+tesuu%2][1]=0;
+					attack_level1_i[tesuu/2+tesuu%2][0]++;
+					break;
+			}
+			break;
+		case 70:
+			break;
+		case 80:
+			break;
+	}
 	return 0;
 }
 
@@ -87,7 +305,7 @@ int check_tume(void){
 		return -1;
 	}
 	y=abs(outegoma_y-gyoku_y);
-	x=abs(outegoma_x-gyoku_y);
+	x=abs(outegoma_x-gyoku_x);
 	if(x<=1 && y<=1){
 		if(bit_ban[outegoma_y][outegoma_x]==0){
 			return -1;
@@ -108,20 +326,20 @@ int kiki(void){
 	int i,j,k;
 	for(i=0;i<9;i++){
 		for(j=0;j<9;j++){
-			if(ban[i][j]>1000){
+			if(ban_think[i][j]>1000){
 				bit_ban[i][j]=1;
 			}else{
-				switch(ban[i][j]){
+				switch(ban_think[i][j]){
 					case 10:
 						bit_ban[i-1][j]=1;
 						outegoma(i-1,j,i,j);
 						break;
 					case 20:
 						for(k=1;0<=i-k;k++){
-							if(ban[i-k][j]==0){
+							if(ban_think[i-k][j]==0){
 								bit_ban[i-k][j]=1;
 								outegoma(i-k,j,i,j);
-							}else if(ban[i-k][j]==1060){
+							}else if(ban_think[i-k][j]==1060){
 								bit_ban[i-k][j]==1;
 							}else{
 								bit_ban[i-k][j]=1;
@@ -202,10 +420,10 @@ int kiki(void){
 					case 70:
 					case 170:
 						for(k=1;0<=j-k && 0<=i-k;k++){
-							if(ban[i-k][j-k]==0){
+							if(ban_think[i-k][j-k]==0){
 								bit_ban[i-k][j-k]=1;
 								outegoma(i-k,j-k,i,j);
-							}else if(ban[i-k][j-k]==1060){
+							}else if(ban_think[i-k][j-k]==1060){
 								bit_ban[i-k][j-k]=1;
 							}else{
 								bit_ban[i-k][j-k]=1;
@@ -214,10 +432,10 @@ int kiki(void){
 							}
 						}
 						for(k=1;i+k<=8 && 0<=j-k;k++){
-							if(ban[i+k][j-k]==0){
+							if(ban_think[i+k][j-k]==0){
 								bit_ban[i+k][j-k]=1;
 								outegoma(i+k,j-k,i,j);
-							}else if(ban[i+k][j-k]==1060){
+							}else if(ban_think[i+k][j-k]==1060){
 								bit_ban[i+k][j-k]=1;
 							}else{
 								bit_ban[i+k][j-k]=1;
@@ -226,10 +444,10 @@ int kiki(void){
 							}
 						}
 						for(k=1;i+k<=8 && j+k<=8;k++){
-							if(ban[i+k][j+k]==0){
+							if(ban_think[i+k][j+k]==0){
 								bit_ban[i+k][j+k]=1;
 								outegoma(i+k,j+k,i,j);
-							}else if(ban[i+k][j+k]==1060){
+							}else if(ban_think[i+k][j+k]==1060){
 								bit_ban[i+k][j+k]=1;
 							}else{
 								bit_ban[i+k][j+k]=1;
@@ -238,10 +456,10 @@ int kiki(void){
 							}
 						}
 						for(k=1;0<=i-k && j+k<=8;k++){
-							if(ban[i-k][j+k]==0){
+							if(ban_think[i-k][j+k]==0){
 								bit_ban[i-k][j+k]=1;
 								outegoma(i-k,j+k,i,j);
-							}else if(ban[i-k][j+k]==1060){
+							}else if(ban_think[i-k][j+k]==1060){
 								bit_ban[i-k][j+k]=1;
 							}else{
 								bit_ban[i-k][j+k]=1;
@@ -249,18 +467,18 @@ int kiki(void){
 								break;
 							}
 						}
-						if(ban[i][j]==70){
+						if(ban_think[i][j]==70){
 							break;
-						}else if(ban[i][j]==170){
+						}else if(ban_think[i][j]==170){
 							goto gyoku;
 						}
 					case 80:
 					case 180:
 						for(k=1;0<=j-k;k++){
-							if(ban[i][j-k]==0){
+							if(ban_think[i][j-k]==0){
 								bit_ban[i][j-k]=1;
 								outegoma(i,j-k,i,j);
-							}else if(ban[i][j-k]==1060){
+							}else if(ban_think[i][j-k]==1060){
 								bit_ban[i][j-k]=1;
 							}else{
 								bit_ban[i][j-k]=1;
@@ -269,10 +487,10 @@ int kiki(void){
 							}
 						}
 						for(k=1;j+k<=8;k++){
-							if(ban[i][j+k]==0){
+							if(ban_think[i][j+k]==0){
 								bit_ban[i][j+k]=1;
 								outegoma(i,j+k,i,j);
-							}else if(ban[i][j+k]==1060){
+							}else if(ban_think[i][j+k]==1060){
 								bit_ban[i][j+k]=1;
 							}else{
 								bit_ban[i][j+k]=1;
@@ -281,10 +499,10 @@ int kiki(void){
 							}
 						}
 						for(k=1;0<=i-k;k++){
-							if(ban[i-k][j]==0){
+							if(ban_think[i-k][j]==0){
 								bit_ban[i-k][j]=1;
 								outegoma(i-k,j,i,j);
-							}else if(ban[i-k][j]==1060){
+							}else if(ban_think[i-k][j]==1060){
 								bit_ban[i-k][j]=1;
 							}else{
 								bit_ban[i-k][j]=1;
@@ -293,10 +511,10 @@ int kiki(void){
 							}
 						}
 						for(k=1;i+k<=8;k++){
-							if(ban[i+k][j]==0){
+							if(ban_think[i+k][j]==0){
 								bit_ban[i+k][j]=1;
 								outegoma(i+k,j,i,j);
-							}else if(ban[i+k][j]==1060){
+							}else if(ban_think[i+k][j]==1060){
 								bit_ban[i+k][j]=1;
 							}else{
 								bit_ban[i+k][j]=1;
@@ -304,9 +522,9 @@ int kiki(void){
 								break;
 							}
 						}
-						if(ban[i][j]==80){
+						if(ban_think[i][j]==80){
 							break;
-						}else if(ban[i][j]==180){
+						}else if(ban_think[i][j]==180){
 							goto gyoku;
 						}
 					case 60:
@@ -589,6 +807,44 @@ int kiki_enemy(void){
 			}
 		}
 	}
+	return 0;
+}
+
+int motigoma_seiri(int koma){
+	int i;
+	for(i=0;i<motigoma_number;i++){
+		if(motigoma_think[i]==koma){
+			motigoma_think[i]=0;
+			for(;i<motigoma_number;i++){
+				motigoma_think[i]=motigoma_think[i+1];
+			}
+			break;
+		}
+	}
+	return 0;
+}
+
+int back_ban(int back_tesuu){
+	int i,j,k,l,x,y;
+	for(j=0;j<8;j++){
+		for(k=0;k<8;k++){
+			ban_think[j][k]=ban[j][k];
+		}
+	}
+	for(i=0;i<motigoma_number;i++){
+		motigoma_think[i]=motigoma[i];
+	}
+	for(i=0;i<tesuu-back_tesuu;i++){
+		if(9900000<=kihu[i]){
+			motigoma_seiri(kihu[i]%1000);
+			x=(kihu[i]-9900000)/10000;
+			y=(kihu[i]-9900000)%10000;
+			ban_think[y][x]=kihu[i]%1000;
+		}
+		if(kihu[i]<=-9900000){
+		}
+	}
+	tesuu=tesuu-back_tesuu;
 	return 0;
 }
 

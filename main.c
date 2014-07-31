@@ -284,13 +284,44 @@ int attack_level1(void){
 		case 70:
 			switch(attack_level1_i[tesuu/2+tesuu%2][1]){
 				case 0:
+					if(gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x]==0){
+							ban_think[gyoku_y+1][gyoku_x]=70;
+							motigoma_seiri(70);
+							kihu[tesuu]=(99*100+gyoku_x*10+(gyoku_y+1))*1000+70;
+						}
+					}
 					attack_level1_i[tesuu/2+tesuu%2][1]++;
 					break;
 				case 1:
+					if(gyoku_x+1<=8){
+						if(ban_think[gyoku_y][gyoku_x+1]==0){
+							ban_think[gyoku_y][gyoku_x+1]=70;
+							motigoma_seiri(70);
+							kihu[tesuu]=(99*100+(gyoku_x+1)*10+gyoku_y)*1000+70;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
 					break;
 				case 2:
+					if(0<=gyoku_y-1){
+						if(ban_think[gyoku_y-1][gyoku_x]==0){
+							ban_think[gyoku_y-1][gyoku_x]=70;
+							motigoma_seiri(70);
+							kihu[tesuu]=(99*100+gyoku_x*10+(gyoku_y-1))*1000+70;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
 					break;
 				case 3:
+					if(0<=gyoku_x-1){
+						if(ban_think[gyoku_y][gyoku_x-1]==0){
+							ban_think[gyoku_y][gyoku_x-1]=70;
+							motigoma_seiri(70);
+							kihu[tesuu]=(99*100+(gyoku_x-1)*10+gyoku_y)*1000+70;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
 					break;
 				case 4:
 					attack_level1_i[tesuu/2+tesuu%2][1]=0;
@@ -299,6 +330,52 @@ int attack_level1(void){
 			}
 			break;
 		case 80:
+			switch(attack_level1_i[tesuu/2+tesuu%2][1]){
+				case 0:
+					if(0<=gyoku_x-1 && gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x-1]==0){
+							ban_think[gyoku_y+1][gyoku_x-1]=80;
+							motigoma_seiri(80);
+							kihu[tesuu]=(99*100+(gyoku_x-1)*10+(gyoku_y+1))*1000+80;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 1:
+					if(gyoku_x+1<=8 && gyoku_y+1<=8){
+						if(ban_think[gyoku_y+1][gyoku_x+1]==0){
+							ban_think[gyoku_y+1][gyoku_x+1]=80;
+							motigoma_seiri(80);
+							kihu[tesuu]=(99*100+(gyoku_x+1)*10+(gyoku_y+1))*1000+80;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 2:
+					if(gyoku_x+1<=8 && 0<=gyoku_y-1){
+						if(ban_think[gyoku_y-1][gyoku_x+1]==0){
+							ban_think[gyoku_y-1][gyoku_x+1]=80;
+							motigoma_seiri(80);
+							kihu[tesuu]=(99*100+(gyoku_x+1)*10+(gyoku_y-1))*1000+80;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 3:
+					if(0<=gyoku_x-1 && 0<=gyoku_y-1){
+						if(ban_think[gyoku_y-1][gyoku_x-1]==0){
+							ban_think[gyoku_y-1][gyoku_x-1]=80;
+							motigoma_seiri(80);
+							kihu[tesuu]=(99*100+(gyoku_x-1)*10+(gyoku_y-1))*1000+80;
+						}
+					}
+					attack_level1_i[tesuu/2+tesuu%2][1]++;
+					break;
+				case 4:
+					attack_level1_i[tesuu/2+tesuu%2][1]=0;
+					attack_level1_i[tesuu/2+tesuu%2][0]++;
+					break;
+			}
 			break;
 	}
 	return 0;
